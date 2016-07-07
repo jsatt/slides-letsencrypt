@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>reveal.js</title>
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/league.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h1>Securing Your Website</h1>
+                    <h2>With Let's Encrypt</h2>
+                    <h4>(In Under 5 Minutes)</h4>
+                </section>
+                <section>
+                    <h2>Jeremy Satterfield</h2>
+                    <p><a href="http://jsatt.com">http://jsatt.com</a></p>
+                    <p><a href="https://github.com/jsatt">https://github.com/jsatt</a></p>
+                    <p><a href="https://twitter.com/jsatt">@jsatt</a></p>
+                    <p><a mailto="jsatt@jsatt.com">jsatt@jsatt.com</a></p>
+                    <aside class="notes">
+                        <ul>
+                            <li>Web developer for over 9 years.</li>
+                            <li>Worked for website measuring traffic in the millions/month</li>
+                            <li>currently working on internal software in oil industry</li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    <h2>Primer on Protocols</h2>
+                    <h3 class="fragment">HTTP</h3>
+                    <h3 class="fragment">SSL/TLS</h3>
+                    <h3 class="fragment">HTTPS</h3>
+                    <h3 class="fragment">HTTP/2</h3>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>HTTP - Hypertext Transfer Protocol, is the protocol of web</li>
+                            <li>SSL/TLS - Secure Sockets Layer and Transport Layer Security
+                                <ul>
+                                    <li>TLS is evolution of SSL</li>
+                                    <li>Both usually referred to as SSL</li>
+                                    <li>cryptographic protocols that allow clients and servers to communicate securely</li>
+                                </ul>
+                            </li>
+                            <li>HTTPS - HTTP over TLS, HTTP over SSL, HTTP Secure</li>
+                            <li>HTTP/2 - new version of http</li>
+                            <ul>
+                                <li>support by latest nginx and apache, slew of other web servers</li>
+                                <li>support by every modern browser, over TLS only</li>
+                                <li>other features out of scope</li>
+                            </ul>
+                            </li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    <h2>TLS Handshake</h2>
+                    <p><img title="http://rebecca.meritz.com/ggm15/#/19" src="img/tls_handshake.png" /></p>
+                    <aside class="notes">
+                        <ul>
+                            <li>Negotiation Phase
+                                <ul>
+                                    <li><code>ClientHello</code> - client sends supported TLS Version, random number, supported ciphers and compression methods</li>
+                                    <li><code>ServerHello</code> - server sends chosen TLS Version, random number, chosen ciphers and compression methods (based on client's)</li>
+                                    <li><code>Certificate</code> - server send public key certificate</li>
+                                    <li><code>ServerHelloDone</code> - server indicates handshake done</li>
+                                    <li><code>ClientKeyExchange</code> - client sends <code>PreMasterSecret</code> encrypted using server pub key</li>
+                                    <li>Client and server use random numbers and <code>PreMasterSecret</code> to calculate common "master secret"</li>
+                                </ul>
+                            </li>
+                            <li><code>ChangeCipherSpec</code>
+                                <ul>
+                                    <li>client sends "I only talk encrpted now"</li>
+                                    <li>client send encrypted <code>Finished</code></li>
+                                    <li>server decrypts <code>Finished</code>, if decrypt fails handshake fails and connection torn down</li>
+                                    <li>server sencs "I only talk encrypted now"</li>
+                                    <li>client decrypts <code>Finished</code>, if decrypt fails handshake fails and connection torn down</li>
+                                </ul>
+                            </li>
+                            <li>Application Phase - handshake done, application protocol (HTTP) enabled, application messages encrypted using same methods as <code>Finished</code></li>
+                            <li>Shutdown - after all messages sent, connection torndown</li>
+                        </ul>
+                </section>
+                <section>
+                    <section>
+                        <h2>Obtaining a Certificate</h2>
+                        <h4>The old way</h4>
+                        <ol>
+                            <li class="fragment">step 1</li>
+                            <li class="fragment">step 2</li>
+                            <li class="fragment">step 3</li>
+                        </ol>
+                    </section>
+                    <section data-background="http://i.giphy.com/l2R0corOGwFTlKZjO.gif">
+                    </section>
+                    <section>
+                        <h2>Eventually</h2>
+                        <h4>We have a certificate</h4>
+                    </section>
+                </section>
+                <section>
+                    <h2>Let's Encrypt</h2>
+                    <aside class="notes">
+                        <ul>
+                            <li>Sponsors -  Mozilla, Akamai, Cisco, EFF, Google Chrome, IdenTrust, many others...</li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    ACME Standard
+                </section>
+                <section>
+                    <section>
+                        <h2>Obtaining a Certificate</h2>
+                        <h4>In the modern world</h4>
+                        <li>Certbot
+                            <ul>
+                                <li>https://certbot.eff.org/</li>
+                                <li>
+                                    <blockquote>
+                                        wget https://dl.eff.org/certbot-auto
+                                        chmod a+x certbot-auto
+                                        ./certbot-auto certonly
+                                    </blockquote>
+                                </li>
+                            </ul>
+                        </li>
+                    </section>
+                    <section data-background="http://i.giphy.com/90F8aUepslB84.gif"></section>
+                </section>
+                <section>
+                    <h2>Obtaining a Certificate</h2>
+                    <h4>Without downtime</h4>
+                    <ul>
+                        <li>Lego
+                            <ul>
+                                <li><code>go get -u github.com/xenolf/lego</code></li>
+                                <li><code>GCE_PROJECT="testencrypt" GCE_DOMAIN='tester.jsatt.com' lego --email='jsatt@jsatt.com' --domains='tester.jsatt.com' --dns='route53' run</code></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Installing Your Certificate</h2>
+                    https://mozilla.github.io/server-side-tls/ssl-config-generator/
+                        <ul>
+                            <li>nginx</li>
+                            <li>Modern</li>
+                            <li>nignx 1.4.6</li>
+                            <li>openssl 1.0.1f</li>
+                        </ul>
+                </section>
+                <section>
+                    <h2>More</h2>
+                    <p><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Wikipedia - Transport Layer Security</a></p>
+                    <p><a href="https://letsencrypt.org/">Let's Encrypt</a></p>
+                    <p><a href="http://rebecca.meritz.com/ggm15/">http://rebecca.meritz.com/ggm15/</a></p>
+                </section>
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+// More info https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+    history: true,
+
+    // More info https://github.com/hakimel/reveal.js#dependencies
+    dependencies: [
+    { src: 'plugin/markdown/marked.js' },
+    { src: 'plugin/markdown/markdown.js' },
+    { src: 'plugin/notes/notes.js', async: true },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+    ]
+});
+        </script>
+    </body>
+</html>
