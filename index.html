@@ -102,30 +102,116 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
                 <section>
                     <section>
                         <h2>Obtaining a Certificate</h2>
-                        <h4>The old way</h4>
+                        <h3>The old way</h3>
                         <ol>
-                            <li class="fragment">step 1</li>
-                            <li class="fragment">step 2</li>
-                            <li class="fragment">step 3</li>
+                            <li class="fragment">Prepare for Validation</li>
+                            <li class="fragment">Generate CSR</li>
+                            <li class="fragment">Order Certificate <span class="fragment">$$$</span></li>
+                            <li class="fragment">Have domain validated</li>
                         </ol>
+                        <aside class="notes">
+                            <ul>
+                                <li>Prepare
+                                    <ul>
+                                        <li>Expose WHOIS info for email confirmation</li>
+                                        <li>Setting server for each domain for HTTP confirmation</li>
+                                        <li>Adding CNAME for DNS confirmation</li>
+                                    </ul>
+                                </li>
+                                <li>Generate Certificate Signing Request
+                                    <ul>
+                                        <li>Encrypted details of certificate being requested</li>
+                                        <li>Contains Common Name (domain), organization, location, contact email, public key used in certifcate</li>
+                                        <li>Used to generate SSL certificate</li>
+                                        <li>Also generates private key, hold on to it. Cert useless without it.</li>
+                                    </ul>
+                                </li>
+                                <li>Order
+                                    <ul>
+                                        <li>register, fill out contact, submit CSR, Pay $$</li>
+                                        <li>Single domain: $17-250/yr</li>
+                                        <li>Multiple: $99-249/yr + per each additional</li>
+                                        <li>Wildcard: $150-850/yr</li>
+                                    </ul>
+                                </li>
+                                <li>wait for validate, usually "within minutes", reevaluate life</li>
+                            </ul>
+                        </aside>
                     </section>
                     <section data-background="http://i.giphy.com/l2R0corOGwFTlKZjO.gif">
                     </section>
                     <section>
-                        <h2>Eventually</h2>
-                        <h4>We have a certificate</h4>
+                        <h2>Obtaining a Certificate</h2>
+                        <ol>
+                            <li>Prepare for Validation</li>
+                            <li>Generate CSR</li>
+                            <li>Order Certificate $$$</li>
+                            <li>Have domain validated</li>
+                            <li>Receive and Install Certificate</li>
+                        </ol>
+                        <aside class="notes">
+                            <ul>
+                                <li>Receive and install ticket</li>
+                            </ul>
+                        </aside>
                     </section>
                 </section>
                 <section>
                     <h2>Let's Encrypt</h2>
-                    <aside class="notes">
-                        <ul>
-                            <li>Sponsors -  Mozilla, Akamai, Cisco, EFF, Google Chrome, IdenTrust, many others...</li>
-                        </ul>
-                    </aside>
+                    <section>
+                        <img src="img/letsencrypt.png" />
+                        <aside class="notes">
+                            <ul>
+                                <li>Non-profit ISRG Internet Secutiry Research Group</li>
+                                <li>Sponsors - EFF, Mozilla Foundation, Akamai, Cisco</li>
+                                <li>other partners - IdenTrust, Linux Foundation, Chrome, Stanford Law School, many others.</li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>Pros</h3>
+                        <p class="fragment">Free</p>
+                        <p class="fragment">Automatic</p>
+                        <p class="fragment">Secure</p>
+                        <p class="fragment">Transparent</p>
+                        <p class="fragment">Open</p>
+                        <p class="fragment">Cooperative</p>
+                        <aside class="notes">
+                            <ul>
+                                <li>free - to any domain owner</li>
+                                <li>Auto - uses software on server to obtain, configure and renew certs</li>
+                                <li>Secure - promotes security best practices, help site ops to secure servers</li>
+                                <li>Transparent - all issued and revoked certs are public record</li>
+                                <li>Open - automatic issuance and renewal protocol is open standard, ACME</li>
+                                <li>Coop - joint effort from many orgs to benefit community, doesn't rely on one org</li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>Cons</h3>
+                        <p class="fragment">Short Validity Time</p>
+                        <p class="fragment">No Wildcard Certificates</p>
+                        <p class="fragment">No Extended Validation or<br> Organization Validation</p>
+                        <aside class="notes">
+                            <ul>
+                                <li>short - expire in 90 days</li>
+                                <li>no wildcard - not big deal since certs are free, up to 100 domains on single cert via SAN</li>
+                                <li>no organization or extended validation - EV shows green "secure" bar</li>
+                            </ul>
+                        </aside>
+                    </section>
                 </section>
                 <section>
-                    ACME Standard
+                    <h2>ACME</h2>
+                    <img src="img/acme.jpg" />
+                    <aside class="notes">
+                        <ul>
+                            <li>Automated Certificate Management Environment</li>
+                            <li>Protocol for CAs to interact with other CAs and users</li>
+                            <li>Allows Automated deployment</li>
+                            <li>JSON over HTTPS</li>
+                            <li>Standard currently in draft stage</li>
+                        </ul>
                 </section>
                 <section>
                     <section>
@@ -167,11 +253,18 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
                             <li>nignx 1.4.6</li>
                             <li>openssl 1.0.1f</li>
                         </ul>
+                    <aside class="notes">
+                        chained cert
                 </section>
                 <section>
                     <h2>More</h2>
                     <p><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Wikipedia - Transport Layer Security</a></p>
                     <p><a href="https://letsencrypt.org/">Let's Encrypt</a></p>
+                    <p>
+                        ACME -
+                        <a href="https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment">Wikipedia</a>
+                        <a href="https://github.com/ietf-wg-acme/acme">GitHub</a>
+                    </p>
                     <p><a href="http://rebecca.meritz.com/ggm15/">http://rebecca.meritz.com/ggm15/</a></p>
                 </section>
             </div>
