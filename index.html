@@ -216,33 +216,22 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
                 <section>
                     <section>
                         <h2>Obtaining a Certificate</h2>
-                        <h4>In the modern world</h4>
-                        <li>Certbot
+                        <h3>In the modern world</h3>
+                        <h4>Certbot</h4>
+                        <pre><code class="hlbash" data-trim contenteditable>
+wget https://dl.eff.org/certbot-auto
+chmod a+x certbot-auto
+./certbot-auto certonly
+                        </code></pre>
+                        <aside class="notes">
                             <ul>
-                                <li>https://certbot.eff.org/</li>
-                                <li>
-                                    <blockquote>
-                                        wget https://dl.eff.org/certbot-auto
-                                        chmod a+x certbot-auto
-                                        ./certbot-auto certonly
-                                    </blockquote>
-                                </li>
+                                <li>stop nginx</li>
+                                <li>certonly for nginx</li>
+                                <li>all domains should be pointing to this IP</li>
+                                <li>start nginx</li>
                             </ul>
-                        </li>
                     </section>
                     <section data-background="http://i.giphy.com/90F8aUepslB84.gif"></section>
-                </section>
-                <section>
-                    <h2>Obtaining a Certificate</h2>
-                    <h4>Without downtime</h4>
-                    <ul>
-                        <li>Lego
-                            <ul>
-                                <li><code>go get -u github.com/xenolf/lego</code></li>
-                                <li><code>GCE_PROJECT="testencrypt" GCE_DOMAIN='tester.jsatt.com' lego --email='jsatt@jsatt.com' --domains='tester.jsatt.com' --dns='route53' run</code></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </section>
                 <section>
                     <h2>Installing Your Certificate</h2>
