@@ -76,6 +76,7 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
                     <p><img title="http://rebecca.meritz.com/ggm15/#/19" src="img/tls_handshake.png" /></p>
                     <aside class="notes">
                         <ul>
+                            <li>Short: negotiate tls version, trade some random numbers, encrypt messages to verify, start talking application protocol</li>
                             <li>Negotiation Phase
                                 <ul>
                                     <li><code>ClientHello</code> - client sends supported TLS Version, random number, supported ciphers and compression methods</li>
@@ -142,6 +143,7 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
                     </section>
                     <section>
                         <h2>Obtaining a Certificate</h2>
+                        <h3>The old way</h3>
                         <ol>
                             <li>Prepare for Validation</li>
                             <li>Generate CSR</li>
@@ -179,7 +181,7 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
                         <aside class="notes">
                             <ul>
                                 <li>free - to any domain owner</li>
-                                <li>Auto - uses software on server to obtain, configure and renew certs</li>
+                                <li>Auto - uses software on server to verfiy, obtain, configure and renew certs</li>
                                 <li>Secure - promotes security best practices, help site ops to secure servers</li>
                                 <li>Transparent - all issued and revoked certs are public record</li>
                                 <li>Open - automatic issuance and renewal protocol is open standard, ACME</li>
@@ -205,7 +207,7 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
                     <h2>ACME</h2>
                     <img src="img/acme.jpg" />
                     <aside class="notes">
-                        <ul>
+                       <ul>
                             <li>Automated Certificate Management Environment</li>
                             <li>Protocol for CAs to interact with other CAs and users</li>
                             <li>Allows Automated deployment</li>
